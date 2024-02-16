@@ -54,8 +54,9 @@ const AuthProvider = ({ children }) => {
 
   const handleFetchProtected = async() => {
     try{
-      const data = await ResourceClient.get('/')
-      setData(data.data)
+      window.location.href = `${config.APP}`;
+      /* const data = await ResourceClient.get('/')
+      setData(data.data) */
     }catch(e){
       showErrorMessage(e)
     }
