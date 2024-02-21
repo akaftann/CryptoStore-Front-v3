@@ -4,7 +4,7 @@ import { SnackbarProvider } from "notistack";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
-import IComplyIntegration from "./pages/IComplyIntegration"
+import Verify from "./pages/Verify";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import style from "./app.module.scss";
 import { AuthContext } from "./context/AuthContext";
@@ -21,6 +21,7 @@ const App = () => {
           <nav className={style.nav}>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
+            <Link to="verify">Verify</Link>
             {/* <Link to="demo">Демо</Link> */}
           </nav>
         )
@@ -31,6 +32,7 @@ const App = () => {
             <>
               <Route path="sign-in" element={<SignIn />} />
               <Route path="sign-up" element={<SignUp />} />
+              <Route path="verify" element={<Verify />} />
             </>
           ) : isUserActivate ? (
             <>
