@@ -21,7 +21,7 @@ const App = () => {
           <nav className={style.nav}>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
-            <Link to="verify">Verify</Link>
+            
             {/* <Link to="demo">Демо</Link> */}
           </nav>
         )
@@ -37,7 +37,7 @@ const App = () => {
           ) : isUserActivate ? (
             <>
             <Route path="demo" element={<Demo />} />
-            <Route path="verify" element={<IComplyIntegration />} />
+            
             </>
           ) : (
             <Route path="confirm-email" element={<ConfirmEmail />} />
