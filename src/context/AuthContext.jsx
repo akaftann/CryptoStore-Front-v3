@@ -50,7 +50,10 @@ const AuthProvider = ({ children }) => {
   const [isUserLogged, setIsUserLogged] = useState(false)
   const [data, setData] = useState();
   const [isUserActivate, setIsUserActivate] = useState(false);
+  const [isUserVerified, setIsUserVerified] = useState(false);
   const [maskEmail, setMaskEmail] = useState();
+  const [sumSubToken, setSumSubToken] = useState('');
+  const [externalId, setExternalId] = useState('');
 
   const handleFetchProtected = async() => {
     try{
@@ -61,6 +64,14 @@ const AuthProvider = ({ children }) => {
       showErrorMessage(e)
     }
   };
+
+  const getSumsubToken = async (email) => {
+    const data = { externalId: email}
+    const result = await authClient.post('/access-token',data)
+    console.log('getSumsubToken: ', result.data.token)
+    setSumSubToken(result.data.token)
+    return result.data.token
+  }
 
   const handleLogOut = async () => {
     const responce = await authClient.post('/logout')
@@ -104,6 +115,7 @@ const AuthProvider = ({ children }) => {
     setIsAppReady(true)
     setIsUserActivate(res.data.isActivate)
     setMaskEmail(res.data.email)
+    setExternalId(res.data.externalId)
    })
     .catch((e)=>{
       setIsUserLogged(false)
@@ -119,10 +131,14 @@ const AuthProvider = ({ children }) => {
         handleSignUp,
         handleSignIn,
         handleLogOut,
+        getSumsubToken,
+        sumSubToken,
+        isUserVerified,
         isAppReady,
         isUserLogged,
         isUserActivate,
         maskEmail,
+        externalId,
       }}
     >
       {isAppReady ? (

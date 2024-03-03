@@ -8,11 +8,13 @@ import Verify from "./pages/Verify";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import style from "./app.module.scss";
 import { AuthContext } from "./context/AuthContext";
+import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
-  const {isUserLogged, isUserActivate} = useContext(AuthContext)
+  const {isUserLogged, isUserActivate, isUserVerified} = useContext(AuthContext)
   console.log("isUserLogged: ", isUserLogged)
   console.log("isUserActivate: ", isUserActivate)
+  console.log("isUserVerified: ", isUserVerified)
   return (
     <div className={style.wrapper}>
       <SnackbarProvider />
@@ -32,18 +34,24 @@ const App = () => {
             <>
               <Route path="sign-in" element={<SignIn />} />
               <Route path="sign-up" element={<SignUp />} />
-              <Route path="verify" element={<Verify />} />
             </>
-          ) : isUserActivate ? (
+          ) : !isUserActivate ? 
+          (
+            <Route path="confirm-email" element={<ConfirmEmail />} />
+          )
+            : !isUserVerified ?
+          (
+            <Route path="verify" element={<SumsubIntegration />} />
+          )
+            :
+          (
             <>
             <Route path="demo" element={<Demo />} />
-            
             </>
-          ) : (
-            <Route path="confirm-email" element={<ConfirmEmail />} />
-          )}
+          ) 
+          }
 
-          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : isUserActivate ? "demo" : "confirm-email"} />} />
+          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : !isUserActivate ? "confirm-email" : isUserVerified ? "demo" : "verify"} />} />
           
         </Routes>
       </BrowserRouter>
