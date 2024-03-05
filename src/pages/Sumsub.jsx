@@ -63,9 +63,7 @@ const SumsubIntegration = () => {
   }
 
   return (
-    <div>
-      {/* Тут ви можете додати будь-які інші компоненти або текст, які вам потрібні */}
-      
+    <div>      
       {sumSubToken===''? ("loading..."):
       launchWebSdk(sumSubToken)}
     </div>
