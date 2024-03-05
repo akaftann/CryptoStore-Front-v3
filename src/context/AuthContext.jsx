@@ -116,6 +116,7 @@ const AuthProvider = ({ children }) => {
     setIsUserActivate(res.data.isActivate)
     setMaskEmail(res.data.email)
     setExternalId(res.data.externalId)
+    setIsUserVerified(res.data.isVerified)
    })
     .catch((e)=>{
       setIsUserLogged(false)
