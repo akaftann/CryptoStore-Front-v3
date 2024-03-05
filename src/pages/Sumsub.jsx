@@ -61,7 +61,9 @@ const SumsubIntegration = () => {
     if(type==="idCheck.onApplicantStatusChanged"){
       if(payload.reviewStatus==="completed" && payload.reviewResult.reviewAnswer==="GREEN"){
         console.log("user verified")
-        navigate('demo')
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     }
     
