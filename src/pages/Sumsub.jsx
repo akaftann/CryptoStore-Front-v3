@@ -2,9 +2,11 @@
 import React, { useEffect, useContext } from 'react';
 import SumsubWebSdk from '@sumsub/websdk-react';
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SumsubIntegration = () => {
   const { getSumsubToken, externalId, sumSubToken } = useContext(AuthContext);
+  const navigate = useNavigate()
   
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const SumsubIntegration = () => {
     if(type==="idCheck.onApplicantStatusChanged"){
       if(payload.reviewStatus==="completed" && payload.reviewResult.reviewAnswer==="GREEN"){
         console.log("user verified")
+        navigate('demo')
       }
     }
     
