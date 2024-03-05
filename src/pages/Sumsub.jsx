@@ -55,6 +55,8 @@ const SumsubIntegration = () => {
   function messageHandler(type, payload) {
     // Логіка обробки повідомлень
     console.log('onMessage', type, payload);
+    console.log("type: ", type, "equal?:", type==="idCheck.onApplicantStatusChanged")
+    
   }
 
   function errorHandler(error) {
