@@ -56,6 +56,11 @@ const SumsubIntegration = () => {
     // Логіка обробки повідомлень
     console.log('onMessage', type, payload);
     console.log("type: ", type, "equal?:", type==="idCheck.onApplicantStatusChanged")
+    if(type==="idCheck.onApplicantStatusChanged"){
+      if(payload.reviewStatus==="completed" && payload.reviewResult.reviewAnswer==="GREEN"){
+        console.log("user verified")
+      }
+    }
     
   }
 
