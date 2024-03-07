@@ -128,7 +128,6 @@ const AuthProvider = ({ children }) => {
   useEffect(()=>{
    authClient.get('/refresh')
    .then((res)=>{
-    console.log('data:', res.data)
     inMemoryJWT.setToken(res.data.accessToken)
     setIsUserLogged(true)
     setIsAppReady(true)

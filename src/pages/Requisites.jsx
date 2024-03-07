@@ -29,6 +29,7 @@ const handleCopyToClipboard = () => {
 const InvoicePage = () => {
   return (
     <div className={style.wrapper}>
+    <div style={styles.container}>
       <div style={styles.section}>
         <h2>Requisites</h2>
         <div style={styles.requisite}>
@@ -92,6 +93,7 @@ const InvoicePage = () => {
           <p>includes fee 3%</p>
         </div>
       </div>
+    </div>
     </div>
   );
 };
