@@ -113,11 +113,12 @@ const AuthProvider = ({ children }) => {
   const handleSignIn = async (data) => {
     try{
       const responce = await authClient.post('/login', data)
-      const {accessToken, isActivate, email} = responce.data
+      const {accessToken, isActivated, email, isVerified} = responce.data
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
-      setIsUserActivate(isActivate)
+      setIsUserActivate(isActivated)
       setMaskEmail(email)
+      setIsUserVerified(isVerified)
     }catch(e){
       console.log('it login error', e)
       showErrorMessage(e)
