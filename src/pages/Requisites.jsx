@@ -1,4 +1,5 @@
 import React from 'react';
+import style from "./style.module.scss";
 
 const handleCopyToClipboard = () => {
     navigator.clipboard.writeText()
@@ -27,7 +28,7 @@ const handleCopyToClipboard = () => {
 
 const InvoicePage = () => {
   return (
-    <div style={styles.container}>
+    <div className={style.wrapper}>
       <div style={styles.section}>
         <h2>Requisites</h2>
         <div style={styles.requisite}>
