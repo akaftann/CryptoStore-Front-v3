@@ -4,6 +4,7 @@ import { SnackbarProvider } from "notistack";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
+import InvoicePage from './pages/Requisites'
 import ConfirmEmail from "./pages/ConfirmEmail";
 import style from "./app.module.scss";
 import { AuthContext } from "./context/AuthContext";
@@ -43,6 +44,7 @@ const App = () => {
           (
             <>
             <Route path="demo" element={<Demo />} />
+            <Route path="req" element={<InvoicePage />} />
             </>
           ) 
           }

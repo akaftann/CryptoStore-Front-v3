@@ -2,19 +2,14 @@ import { useContext, useState, useEffect } from "react";
 import style from "./style.module.scss";
 import { AuthContext } from "../context/AuthContext";
 import Button from "../components/Button/Button";
+import { useNavigate } from "react-router-dom";
 
 export default function Demo() {
   const { data, handleLogOut, handleFetchProtected } = useContext(AuthContext);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const navigate = useNavigate();
 
   const handleButtonClick = () => {
-    // Якщо кнопка натискана, а скрипт не завантажений, завантажуємо його
-    if (!scriptLoaded) {
-      loadTokenOfTrustScript();
-      setScriptLoaded(true);
-    }
-
-    // Тут можна викликати інші функції або логіку, пов'язану з вашою кнопкою
+    navigate('/req')
   };
 
   return (
