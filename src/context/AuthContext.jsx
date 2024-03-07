@@ -11,7 +11,7 @@ import inMemoryJWT from "../services/inMemoryJWTService";
 export const authClient = axios.create({baseURL:`${config.API_URL}/`,
   withCredentials:true})
 
-const ResourceClient = axios.create({baseURL:`${config.API_URL}/protected`,
+const ResourceClient = axios.create({baseURL:`${config.API_URL}/`,
   withCredentials:true})
 
 ResourceClient.interceptors.request.use((config)=>{
@@ -40,6 +40,9 @@ ResourceClient.interceptors.response.use((config)=>{
       setIsUserLogged(false)
       showErrorMessage(e)
     }
+  }
+  else{
+    throw error
   }
 })
 
@@ -80,6 +83,20 @@ const AuthProvider = ({ children }) => {
     setIsUserActivate(false)
   };
 
+  const handleActivate = async (code) => {
+    try{
+      const data = {activationCode: code}
+      const responce = await ResourceClient.post('/activate',data)
+      console.log('responce after activate:. ', responce)
+      if(responce.data.isActivated){
+        setIsUserActivate(true)
+        setExternalId(responce.data.externalId)
+      }
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
   const handleSignUp = async (data) => {
     try{
       const responce = await authClient.post('/registration', data)
@@ -102,6 +119,7 @@ const AuthProvider = ({ children }) => {
       setIsUserActivate(isActivate)
       setMaskEmail(email)
     }catch(e){
+      console.log('it login error', e)
       showErrorMessage(e)
     }
   };
@@ -132,6 +150,7 @@ const AuthProvider = ({ children }) => {
         handleSignUp,
         handleSignIn,
         handleLogOut,
+        handleActivate,
         getSumsubToken,
         sumSubToken,
         isUserVerified,

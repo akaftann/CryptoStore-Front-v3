@@ -2,20 +2,20 @@
 import React, { useEffect, useContext } from 'react';
 import SumsubWebSdk from '@sumsub/websdk-react';
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const SumsubIntegration = () => {
   const { getSumsubToken, externalId, sumSubToken } = useContext(AuthContext);
-  const navigate = useNavigate()
+  
   
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = await getSumsubToken(externalId);
-      console.log('ttttestt:.', token);
+      console.log('start sumsub component', externalId)
+      await getSumsubToken(externalId);
     };
-  
-    fetchData();
+    if(externalId!==''){
+      fetchData();
+    }
   }, []);
 
   function launchWebSdk(token) {
@@ -76,7 +76,7 @@ const SumsubIntegration = () => {
 
   return (
     <div>      
-      {sumSubToken===''? ("loading..."):
+      {!sumSubToken ? ("Loading..."):
       launchWebSdk(sumSubToken)}
     </div>
   );

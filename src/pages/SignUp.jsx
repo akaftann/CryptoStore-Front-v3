@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "./validtionSchemas";
-import Select from "../components/Select/Select";
 import Field from "../components/Field/Field";
 import Button from "../components/Button/Button";
 

@@ -4,7 +4,6 @@ import { SnackbarProvider } from "notistack";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
-import Verify from "./pages/Verify";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import style from "./app.module.scss";
 import { AuthContext } from "./context/AuthContext";
@@ -12,9 +11,6 @@ import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
   const {isUserLogged, isUserActivate, isUserVerified} = useContext(AuthContext)
-  console.log("isUserLogged: ", isUserLogged)
-  console.log("isUserActivate: ", isUserActivate)
-  console.log("isUserVerified: ", isUserVerified)
   return (
     <div className={style.wrapper}>
       <SnackbarProvider />
@@ -39,7 +35,7 @@ const App = () => {
           (
             <Route path="confirm-email" element={<ConfirmEmail />} />
           )
-            : !isUserVerified ?
+            : !isUserVerified ? 
           (
             <Route path="verify" element={<SumsubIntegration />} />
           )
