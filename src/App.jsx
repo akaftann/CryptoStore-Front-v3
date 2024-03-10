@@ -11,17 +11,20 @@ import { AuthContext } from "./context/AuthContext";
 import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
-  const {isUserLogged, isUserActivate, isUserVerified} = useContext(AuthContext)
+  const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
   return (
     <div className={style.wrapper}>
       <SnackbarProvider />
       <BrowserRouter>
-        {!isUserLogged && (
+        {!isUserLogged ? (
           <nav className={style.nav}>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
-            
-            {/* <Link to="demo">Демо</Link> */}
+          </nav>
+        ):
+        (
+          <nav className={style.nav}>
+            <button className={style.navButton} onClick={handleLogOut}>Log-out</button>
           </nav>
         )
 

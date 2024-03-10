@@ -29,7 +29,7 @@ const handleCopyToClipboard = () => {
 const InvoicePage = () => {
   return (
     <div className={style.wrapper}>
-    <div style={styles.container}>
+    <div >
       <div style={styles.section}>
         <h2>Requisites</h2>
         <div style={styles.requisite}>
