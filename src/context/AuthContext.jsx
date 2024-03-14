@@ -8,10 +8,12 @@ import inMemoryJWT from "../services/inMemoryJWTService";
 
 
 
+
+
 export const authClient = axios.create({baseURL:`${config.API_URL}/`,
   withCredentials:true})
 
-const ResourceClient = axios.create({baseURL:`${config.API_URL}/protected`,
+const ResourceClient = axios.create({baseURL:`${config.API_URL}/`,
   withCredentials:true})
 
 ResourceClient.interceptors.request.use((config)=>{
@@ -41,6 +43,9 @@ ResourceClient.interceptors.response.use((config)=>{
       showErrorMessage(e)
     }
   }
+  else{
+    throw error
+  }
 })
 
 export const AuthContext = createContext({});
@@ -50,7 +55,12 @@ const AuthProvider = ({ children }) => {
   const [isUserLogged, setIsUserLogged] = useState(false)
   const [data, setData] = useState();
   const [isUserActivate, setIsUserActivate] = useState(false);
+  const [isUserVerified, setIsUserVerified] = useState(false);
   const [maskEmail, setMaskEmail] = useState();
+  const [sumSubToken, setSumSubToken] = useState('');
+  const [externalId, setExternalId] = useState('');
+  const [wallet, setWallet] = useState('');
+  const [network, setNetwork] = useState('');
 
   const handleFetchProtected = async() => {
     try{
@@ -62,11 +72,33 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const getSumsubToken = async (email) => {
+    const data = { externalId: email}
+    const result = await authClient.post('/access-token',data)
+    console.log('getSumsubToken: ', result.data.token)
+    setSumSubToken(result.data.token)
+    return result.data.token
+  }
+
   const handleLogOut = async () => {
     const responce = await authClient.post('/logout')
     inMemoryJWT.deleteToken()
     setIsUserLogged(false)
     setIsUserActivate(false)
+  };
+
+  const handleActivate = async (code) => {
+    try{
+      const data = {activationCode: code}
+      const responce = await ResourceClient.post('/activate',data)
+      console.log('responce after activate:. ', responce)
+      if(responce.data.isActivated){
+        setIsUserActivate(true)
+        setExternalId(responce.data.externalId)
+      }
+    }catch(e){
+      showErrorMessage(e)
+    }
   };
 
   const handleSignUp = async (data) => {
@@ -85,25 +117,68 @@ const AuthProvider = ({ children }) => {
   const handleSignIn = async (data) => {
     try{
       const responce = await authClient.post('/login', data)
-      const {accessToken, isActivate, email} = responce.data
+      const {accessToken, isActivated, email, isVerified} = responce.data
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
-      setIsUserActivate(isActivate)
+      setIsUserActivate(isActivated)
       setMaskEmail(email)
+      setIsUserVerified(isVerified)
     }catch(e){
       showErrorMessage(e)
     }
   };
 
+
+  const handleAddWallet = async (data) => {
+    try{
+      console.log('triying add wallet', data)
+      const responce = await ResourceClient.post('/wallet', data)
+      console.log('responce: ', responce)
+      const {walletNumber, network} = responce.data
+      console.log('responce2')
+      setWallet(walletNumber)
+      setNetwork(network)
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
+  const getWallet = async () => {
+    try{
+      const responce = await ResourceClient.get('/wallet')
+      const {wallet, network} = responce.data
+      if(wallet){
+        setWallet(wallet)
+        setNetwork(network)
+      }
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
+  const handleDeleteWallet = async () => {
+    try{
+      const responce = await ResourceClient.get('/wallet/remove')
+      setWallet('')
+      setNetwork('')
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
+
   useEffect(()=>{
    authClient.get('/refresh')
    .then((res)=>{
-    console.log('data:', res.data)
     inMemoryJWT.setToken(res.data.accessToken)
     setIsUserLogged(true)
     setIsAppReady(true)
     setIsUserActivate(res.data.isActivate)
     setMaskEmail(res.data.email)
+    setExternalId(res.data.externalId)
+    setIsUserVerified(res.data.isVerified)
+    setWallet(res.data.walletNumber)
+    setNetwork(res.data.network)
    })
     .catch((e)=>{
       setIsUserLogged(false)
@@ -119,10 +194,20 @@ const AuthProvider = ({ children }) => {
         handleSignUp,
         handleSignIn,
         handleLogOut,
+        handleActivate,
+        handleAddWallet,
+        handleDeleteWallet,
+        getSumsubToken,
+        getWallet,
+        sumSubToken,
+        isUserVerified,
         isAppReady,
         isUserLogged,
         isUserActivate,
         maskEmail,
+        externalId,
+        wallet,
+        network,
       }}
     >
       {isAppReady ? (

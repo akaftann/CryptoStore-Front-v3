@@ -4,24 +4,30 @@ import { SnackbarProvider } from "notistack";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
-import IComplyIntegration from "./pages/IComplyIntegration"
+import InvoicePage from './pages/Requisites2'
 import ConfirmEmail from "./pages/ConfirmEmail";
-import style from "./app.module.scss";
+import WalletInfo from "./pages/WalletInfo";
 import { AuthContext } from "./context/AuthContext";
+import AddWallet from './pages/AddWallet'
+import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
-  const {isUserLogged, isUserActivate} = useContext(AuthContext)
-  console.log("isUserLogged: ", isUserLogged)
-  console.log("isUserActivate: ", isUserActivate)
+  const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
   return (
-    <div className={style.wrapper}>
+    <div className='wrapper'>
       <SnackbarProvider />
       <BrowserRouter>
-        {!isUserLogged && (
-          <nav className={style.nav}>
+        {!isUserLogged ? (
+          <nav className='nav'>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
-            {/* <Link to="demo">Демо</Link> */}
+          </nav>
+        ):
+        (
+          <nav className='nav'>
+            <Link to="demo">Home</Link>
+            <Link to="wallet-info">My-wallet</Link>
+            <button className='navButton' onClick={handleLogOut}>Log-out</button>
           </nav>
         )
 
@@ -32,16 +38,26 @@ const App = () => {
               <Route path="sign-in" element={<SignIn />} />
               <Route path="sign-up" element={<SignUp />} />
             </>
-          ) : isUserActivate ? (
+          ) : !isUserActivate ? 
+          (
+            <Route path="confirm-email" element={<ConfirmEmail />} />
+          )
+            : !isUserVerified ? 
+          (
+            <Route path="verify" element={<SumsubIntegration />} />
+          )
+            :
+          (
             <>
             <Route path="demo" element={<Demo />} />
-            <Route path="verify" element={<IComplyIntegration />} />
+            <Route path="req" element={<InvoicePage />} />
+            <Route path="wallet-info" element={<WalletInfo />} />
+            <Route path="wallet" element={<AddWallet />} />
             </>
-          ) : (
-            <Route path="confirm-email" element={<ConfirmEmail />} />
-          )}
+          ) 
+          }
 
-          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : isUserActivate ? "demo" : "confirm-email"} />} />
+          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : !isUserActivate ? "confirm-email" : isUserVerified ? "demo" : "verify"} />} />
           
         </Routes>
       </BrowserRouter>
