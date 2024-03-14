@@ -8,6 +8,8 @@ import inMemoryJWT from "../services/inMemoryJWTService";
 
 
 
+
+
 export const authClient = axios.create({baseURL:`${config.API_URL}/`,
   withCredentials:true})
 
@@ -57,6 +59,8 @@ const AuthProvider = ({ children }) => {
   const [maskEmail, setMaskEmail] = useState();
   const [sumSubToken, setSumSubToken] = useState('');
   const [externalId, setExternalId] = useState('');
+  const [wallet, setWallet] = useState('');
+  const [network, setNetwork] = useState('');
 
   const handleFetchProtected = async() => {
     try{
@@ -120,10 +124,48 @@ const AuthProvider = ({ children }) => {
       setMaskEmail(email)
       setIsUserVerified(isVerified)
     }catch(e){
-      console.log('it login error', e)
       showErrorMessage(e)
     }
   };
+
+
+  const handleAddWallet = async (data) => {
+    try{
+      console.log('triying add wallet', data)
+      const responce = await ResourceClient.post('/wallet', data)
+      console.log('responce: ', responce)
+      const {walletNumber, network} = responce.data
+      console.log('responce2')
+      setWallet(walletNumber)
+      setNetwork(network)
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
+  const getWallet = async () => {
+    try{
+      const responce = await ResourceClient.get('/wallet')
+      const {wallet, network} = responce.data
+      if(wallet){
+        setWallet(wallet)
+        setNetwork(network)
+      }
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
+  const handleDeleteWallet = async () => {
+    try{
+      const responce = await ResourceClient.get('/wallet/remove')
+      setWallet('')
+      setNetwork('')
+    }catch(e){
+      showErrorMessage(e)
+    }
+  };
+
 
   useEffect(()=>{
    authClient.get('/refresh')
@@ -135,6 +177,8 @@ const AuthProvider = ({ children }) => {
     setMaskEmail(res.data.email)
     setExternalId(res.data.externalId)
     setIsUserVerified(res.data.isVerified)
+    setWallet(res.data.walletNumber)
+    setNetwork(res.data.network)
    })
     .catch((e)=>{
       setIsUserLogged(false)
@@ -151,7 +195,10 @@ const AuthProvider = ({ children }) => {
         handleSignIn,
         handleLogOut,
         handleActivate,
+        handleAddWallet,
+        handleDeleteWallet,
         getSumsubToken,
+        getWallet,
         sumSubToken,
         isUserVerified,
         isAppReady,
@@ -159,6 +206,8 @@ const AuthProvider = ({ children }) => {
         isUserActivate,
         maskEmail,
         externalId,
+        wallet,
+        network,
       }}
     >
       {isAppReady ? (

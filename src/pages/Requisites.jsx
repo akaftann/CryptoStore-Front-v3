@@ -41,7 +41,7 @@ const InvoicePage = () => {
           <button onClick={() => handleCopyToClipboard('some number')}>Copy</button>
         </div>
         <div style={styles.requisite}>
-          <p>Company name: In the day AB</p>
+          <p>Company name In the day AB</p>
           <button onClick={() => handleCopyToClipboard('In the day AB')}>Copy</button>
         </div>
         <div style={styles.requisite}>

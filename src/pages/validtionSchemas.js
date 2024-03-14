@@ -23,3 +23,12 @@ export const signUpSchema = Yup.object({
     .matches(/^(?=.*[A-Z])(?=.*[0-9])/, "Password must contain at least one uppercase letter and one digit")
     .max(50, "Maximum length is 50 characters"),
 });
+
+export const addWalletSchema = Yup.object({
+  walletNumber: Yup.string()
+    .required("Wallet number is a required field!")
+    .max(50, "Maximum length is 50 characters"),
+  network: Yup.string()
+    .required("Network is a required field!")
+    .max(50, "Maximum length is 50 characters"),
+});

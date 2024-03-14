@@ -4,27 +4,30 @@ import { SnackbarProvider } from "notistack";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
-import InvoicePage from './pages/Requisites'
+import InvoicePage from './pages/Requisites2'
 import ConfirmEmail from "./pages/ConfirmEmail";
-import style from "./app.module.scss";
+import WalletInfo from "./pages/walletInfo";
 import { AuthContext } from "./context/AuthContext";
+import AddWallet from './pages/AddWallet'
 import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
   const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
   return (
-    <div className={style.wrapper}>
+    <div className='wrapper'>
       <SnackbarProvider />
       <BrowserRouter>
         {!isUserLogged ? (
-          <nav className={style.nav}>
+          <nav className='nav'>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
           </nav>
         ):
         (
-          <nav className={style.nav}>
-            <button className={style.navButton} onClick={handleLogOut}>Log-out</button>
+          <nav className='nav'>
+            <Link to="demo">Home</Link>
+            <Link to="wallet-info">My-wallet</Link>
+            <button className='navButton' onClick={handleLogOut}>Log-out</button>
           </nav>
         )
 
@@ -48,6 +51,8 @@ const App = () => {
             <>
             <Route path="demo" element={<Demo />} />
             <Route path="req" element={<InvoicePage />} />
+            <Route path="wallet-info" element={<WalletInfo />} />
+            <Route path="wallet" element={<AddWallet />} />
             </>
           ) 
           }
