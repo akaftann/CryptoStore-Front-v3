@@ -6,7 +6,7 @@ import SignIn from "./pages/SignIn";
 import Demo from "./pages/Demo";
 import InvoicePage from './pages/Requisites2'
 import ConfirmEmail from "./pages/ConfirmEmail";
-import WalletInfo from "./pages/walletInfo";
+import WalletInfo from "./pages/WalletInfo";
 import { AuthContext } from "./context/AuthContext";
 import AddWallet from './pages/AddWallet'
 import SumsubIntegration from './pages/Sumsub'
