@@ -11,6 +11,7 @@ import { AuthContext } from "./context/AuthContext";
 import AddWallet from './pages/AddWallet'
 import Validate2faPage from './pages/Validate2FA'
 import ProfilePage from './pages/Profile'
+import SumsubIntegration from './pages/Sumsub'
 
 const App = () => {
   const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
