@@ -9,7 +9,8 @@ import ConfirmEmail from "./pages/ConfirmEmail";
 import WalletInfo from "./pages/WalletInfo";
 import { AuthContext } from "./context/AuthContext";
 import AddWallet from './pages/AddWallet'
-import SumsubIntegration from './pages/Sumsub'
+import Validate2faPage from './pages/Validate2FA'
+import ProfilePage from './pages/Profile'
 
 const App = () => {
   const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
@@ -26,7 +27,7 @@ const App = () => {
         (
           <nav className='nav'>
             <Link to="demo">Home</Link>
-            <Link to="wallet-info">My-wallet</Link>
+            <Link to="profile">Profile</Link>
             <button className='navButton' onClick={handleLogOut}>Log-out</button>
           </nav>
         )
@@ -37,6 +38,8 @@ const App = () => {
             <>
               <Route path="sign-in" element={<SignIn />} />
               <Route path="sign-up" element={<SignUp />} />
+              <Route path="validate2fa" element={<Validate2faPage />} />
+              
             </>
           ) : !isUserActivate ? 
           (
@@ -53,6 +56,8 @@ const App = () => {
             <Route path="req" element={<InvoicePage />} />
             <Route path="wallet-info" element={<WalletInfo />} />
             <Route path="wallet" element={<AddWallet />} />
+            <Route path="validate2fa" element={<Validate2faPage />} />
+            <Route path="profile" element={<ProfilePage />} />
             </>
           ) 
           }

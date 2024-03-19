@@ -5,8 +5,7 @@ import config from "../config";
 import style from "../app.module.scss";
 import showErrorMessage from "../utils/showErrorMessage";
 import inMemoryJWT from "../services/inMemoryJWTService";
-
-
+import { toast } from "react-toastify";
 
 
 
@@ -34,8 +33,8 @@ ResourceClient.interceptors.response.use((config)=>{
   const originalRequest = error.config
   if(error.response.status == 401){
     try{
-      const responce = await axios.get(`${config.API_URL}/refresh`, {withCredentials:true})
-      inMemoryJWT.setToken(responce.data.accessToken)
+      const response = await axios.get(`${config.API_URL}/refresh`, {withCredentials:true})
+      inMemoryJWT.setToken(response.data.accessToken)
       authClient.request(originalRequest)
       return setIsUserLogged(true)
     }catch(e){
@@ -61,6 +60,14 @@ const AuthProvider = ({ children }) => {
   const [externalId, setExternalId] = useState('');
   const [wallet, setWallet] = useState('');
   const [network, setNetwork] = useState('');
+  const [requestLoading, setRequestLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [secret, setSecret] = useState({otpauthUrl: "", base32: ""});
+  const [is2FAEnabled, setIs2FAEnabled] = useState(false);
+  const [userId, setUserId] = useState('');
+  const [tempData, setTempData] = useState({});
+  const [openModalValidate, setOpenModalValidate] = useState(false);
+  
 
   const handleFetchProtected = async() => {
     try{
@@ -81,7 +88,7 @@ const AuthProvider = ({ children }) => {
   }
 
   const handleLogOut = async () => {
-    const responce = await authClient.post('/logout')
+    const response = await authClient.post('/logout')
     inMemoryJWT.deleteToken()
     setIsUserLogged(false)
     setIsUserActivate(false)
@@ -90,11 +97,11 @@ const AuthProvider = ({ children }) => {
   const handleActivate = async (code) => {
     try{
       const data = {activationCode: code}
-      const responce = await ResourceClient.post('/activate',data)
-      console.log('responce after activate:. ', responce)
-      if(responce.data.isActivated){
+      const response = await ResourceClient.post('/activate',data)
+      console.log('response after activate:. ', response)
+      if(response.data.isActivated){
         setIsUserActivate(true)
-        setExternalId(responce.data.externalId)
+        setExternalId(response.data.externalId)
       }
     }catch(e){
       showErrorMessage(e)
@@ -103,9 +110,9 @@ const AuthProvider = ({ children }) => {
 
   const handleSignUp = async (data) => {
     try{
-      const responce = await authClient.post('/registration', data)
-      const {accessToken, email} = responce.data
-      console.log('sign up link: ', responce.data)
+      const response = await authClient.post('/registration', data)
+      const {accessToken, email} = response.data
+      console.log('sign up link: ', response.data)
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
       setMaskEmail(email)
@@ -114,15 +121,54 @@ const AuthProvider = ({ children }) => {
     }
   }
 
-  const handleSignIn = async (data) => {
+  const verifyOtp = async (token, closeModal) => {
+    try {
+      setRequestLoading(true);
+      const response = await ResourceClient.post('/otp/verify', {token})
+      console.log('respone verify otp...', response)
+      if(response.data.otpEnabled){
+        setIs2FAEnabled(response.data.otpEnabled)
+      }
+      setRequestLoading(false);
+      closeModal();
+      toast.success("Two-Factor Auth Enabled Successfully", {
+        position: "top-right",
+      });
+      return 
+    } catch (e) {
+      setRequestLoading(false);
+      showErrorMessage(e)
+    }
+  };
+
+  const completeSignIn = async (data) => {
     try{
-      const responce = await authClient.post('/login', data)
-      const {accessToken, isActivated, email, isVerified} = responce.data
+      const response = await authClient.post('/login', data)
+      console.log('response login...', response)
+      const { accessToken, isActivated, email, isVerified, otpEnabled} = response.data
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
       setIsUserActivate(isActivated)
       setMaskEmail(email)
       setIsUserVerified(isVerified)
+      setIs2FAEnabled(otpEnabled)
+    }catch(e){
+      showErrorMessage(e)
+    }
+  }
+
+  const handleSignIn = async (data) => {
+    try{
+      const response = await authClient.post('/prelogin', data)
+      console.log('response prelogin...', response)
+      const { email, otpEnabled, userId} = response.data
+      setUserId(userId)
+      if(!otpEnabled){
+        return completeSignIn(data)
+      }
+      setTempData(data)
+      setOpenModalValidate(true)
+      
     }catch(e){
       showErrorMessage(e)
     }
@@ -132,10 +178,10 @@ const AuthProvider = ({ children }) => {
   const handleAddWallet = async (data) => {
     try{
       console.log('triying add wallet', data)
-      const responce = await ResourceClient.post('/wallet', data)
-      console.log('responce: ', responce)
-      const {walletNumber, network} = responce.data
-      console.log('responce2')
+      const response = await ResourceClient.post('/wallet', data)
+      console.log('response: ', response)
+      const {walletNumber, network} = response.data
+      console.log('response2')
       setWallet(walletNumber)
       setNetwork(network)
     }catch(e){
@@ -145,8 +191,8 @@ const AuthProvider = ({ children }) => {
 
   const getWallet = async () => {
     try{
-      const responce = await ResourceClient.get('/wallet')
-      const {wallet, network} = responce.data
+      const response = await ResourceClient.get('/wallet')
+      const {wallet, network} = response.data
       if(wallet){
         setWallet(wallet)
         setNetwork(network)
@@ -158,13 +204,78 @@ const AuthProvider = ({ children }) => {
 
   const handleDeleteWallet = async () => {
     try{
-      const responce = await ResourceClient.get('/wallet/remove')
+      const response = await ResourceClient.get('/wallet/remove')
       setWallet('')
       setNetwork('')
     }catch(e){
       showErrorMessage(e)
     }
   };
+
+  
+
+  const validate2fa = async (token, userId) => {
+    try {
+      setRequestLoading(true);
+      const response = await ResourceClient.post('/otp/validate', {token, userId})
+      const {otpValid} = response.data
+      setRequestLoading(false);
+     return otpValid
+    } catch (e) {
+      setRequestLoading(false);
+      showErrorMessage(e)
+    }
+  };
+
+  const generateQrCode = async () => {
+    try {
+      setRequestLoading(true);
+      const response = await ResourceClient.get('/otp/generate')
+      setRequestLoading(false);
+
+      if (response.status === 200) {
+        console.log({
+          base32: response.data.result.base32,
+          otpauthUrl: response.data.result.otpAuthUrl
+        });
+        setSecret({
+          otpauthUrl: response.data.result.otpAuthUrl,
+          base32: response.data.result.base32,
+        });
+        setOpenModal(true);
+      }
+    } catch (e) {
+      setRequestLoading(false);
+      showErrorMessage(e)
+    }
+  };
+
+
+  const disableTwoFactorAuth = async () => {
+    try {
+      setRequestLoading(true);
+      const response = await ResourceClient.get('/otp/disable')
+      console.log('start disable otp..', response)
+      setRequestLoading(false);
+      if(response.data.isDisabled){
+        setIs2FAEnabled(false)
+        toast.warning("Two Factor Authentication Disabled", {
+        position: "top-right",
+        });
+      }
+      
+    } catch (e) {
+      setRequestLoading(false);
+      showErrorMessage(e)
+    }
+  };
+
+  const actions = {
+    1: completeSignIn,
+    2: handleDeleteWallet,
+    3: handleAddWallet,
+    4: disableTwoFactorAuth
+  }
 
 
   useEffect(()=>{
@@ -179,6 +290,8 @@ const AuthProvider = ({ children }) => {
     setIsUserVerified(res.data.isVerified)
     setWallet(res.data.walletNumber)
     setNetwork(res.data.network)
+    setIs2FAEnabled(res.data.otpEnabled)
+    setUserId(res.data.userId)
    })
     .catch((e)=>{
       setIsUserLogged(false)
@@ -199,6 +312,14 @@ const AuthProvider = ({ children }) => {
         handleDeleteWallet,
         getSumsubToken,
         getWallet,
+        verifyOtp,
+        validate2fa,
+        generateQrCode,
+        disableTwoFactorAuth,
+        setOpenModal,
+        setOpenModalValidate,
+        completeSignIn,
+        setTempData,
         sumSubToken,
         isUserVerified,
         isAppReady,
@@ -208,6 +329,14 @@ const AuthProvider = ({ children }) => {
         externalId,
         wallet,
         network,
+        requestLoading,
+        openModal,
+        openModalValidate,
+        secret,
+        is2FAEnabled,
+        tempData,
+        userId,
+        actions,
       }}
     >
       {isAppReady ? (

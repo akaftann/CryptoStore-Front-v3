@@ -32,3 +32,9 @@ export const addWalletSchema = Yup.object({
     .required("Network is a required field!")
     .max(50, "Maximum length is 50 characters"),
 });
+
+
+export const validate2FASchema = Yup.object({
+  token: Yup.string()
+    .required("Authentication code is required!")
+});
