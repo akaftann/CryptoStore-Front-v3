@@ -3,10 +3,10 @@ import cn from "classnames";
 import style from "./field.module.scss";
 
 export default memo(
-  ({ register, name, error = false, helperText = "", ...rest }) => {
+  ({ register, type, name, error = false, helperText = "", ...rest }) => {
     return (
       <div className={cn(style.inputField, error && style.inputField__error)}>
-        <input {...register(name)} {...rest} />
+        <input type={type} {...register(name)} {...rest} />
         {error && <p className={style.error}>{helperText}</p>}
       </div>
     );

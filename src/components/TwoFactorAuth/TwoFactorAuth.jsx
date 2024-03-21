@@ -33,8 +33,6 @@ const TwoFactorAuth = ({closeModal}) => {
     resolver: zodResolver(twoFactorAuthSchema),
   });
 
-
-console.log("otpauthUrl, base32", secret)
   const onSubmitHandler = (values) => {
     verifyOtp(values.token, closeModal);
   };

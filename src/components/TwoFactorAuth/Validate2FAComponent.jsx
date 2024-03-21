@@ -34,10 +34,8 @@ const Validate2FAComponent = ({closeModal, action}) => {
   });
   const navigate = useNavigate();
 
-  console.log('action', action)
   const onSubmitHandler = async (values) => {
-   const isValidate =  validate2fa(values.token, userId);
-   console.log('starting 2fa with action:', action)
+   const isValidate =  await validate2fa(values.token, userId);
    if(isValidate){
     switch(action){
       case 1:
@@ -57,9 +55,9 @@ const Validate2FAComponent = ({closeModal, action}) => {
         console.log('case 4')
         actions[4]()
      }
+     closeModal()
    }
    
-   closeModal()
   };
 
 

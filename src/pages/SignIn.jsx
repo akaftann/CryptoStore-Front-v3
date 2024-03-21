@@ -31,6 +31,7 @@ export default function SignIn() {
     <form onSubmit={handleSubmit(handleSignIn)} className={style.wrapper}>
       <h2>Log in</h2>
       <Field
+        type="text"
         name="email"
         register={register}
         autoComplete="off"
@@ -39,6 +40,7 @@ export default function SignIn() {
         helperText={errors.email?.message}
       />
       <Field
+        type="password"
         name="pass"
         register={register}
         autoComplete="off"
