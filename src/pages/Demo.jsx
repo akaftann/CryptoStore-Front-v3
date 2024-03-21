@@ -10,6 +10,7 @@ export default function Demo() {
   const navigate = useNavigate();
 
   const handleButtonClick = () => {
+    console.log('click buy, wallet:', wallet)
     if(!wallet){
       const error = new Error('Request failed');
       error.response = {

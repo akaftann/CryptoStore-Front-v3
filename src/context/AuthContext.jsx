@@ -17,8 +17,6 @@ const ResourceClient = axios.create({baseURL:`${config.API_URL}/`,
 
 ResourceClient.interceptors.request.use((config)=>{
   const accessToken = inMemoryJWT.getToken()
-  console.log('starting interseptor')
-  console.log('accessToken: ', accessToken)
   if(accessToken){
     config.headers["Authorization"] = `Bearer ${accessToken}`
   }
@@ -82,7 +80,6 @@ const AuthProvider = ({ children }) => {
   const getSumsubToken = async (email) => {
     const data = { externalId: email}
     const result = await authClient.post('/access-token',data)
-    console.log('getSumsubToken: ', result.data.token)
     setSumSubToken(result.data.token)
     return result.data.token
   }
@@ -98,7 +95,6 @@ const AuthProvider = ({ children }) => {
     try{
       const data = {activationCode: code}
       const response = await ResourceClient.post('/activate',data)
-      console.log('response after activate:. ', response)
       if(response.data.isActivated){
         setIsUserActivate(true)
         setExternalId(response.data.externalId)
@@ -112,7 +108,6 @@ const AuthProvider = ({ children }) => {
     try{
       const response = await authClient.post('/registration', data)
       const {accessToken, email} = response.data
-      console.log('sign up link: ', response.data)
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
       setMaskEmail(email)
@@ -125,7 +120,6 @@ const AuthProvider = ({ children }) => {
     try {
       setRequestLoading(true);
       const response = await ResourceClient.post('/otp/verify', {token})
-      console.log('respone verify otp...', response)
       if(response.data.otpEnabled){
         setIs2FAEnabled(response.data.otpEnabled)
       }
@@ -144,7 +138,6 @@ const AuthProvider = ({ children }) => {
   const completeSignIn = async (data) => {
     try{
       const response = await authClient.post('/login', data)
-      console.log('response login...', response)
       const { accessToken, isActivated, email, isVerified, otpEnabled} = response.data
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
@@ -160,7 +153,6 @@ const AuthProvider = ({ children }) => {
   const handleSignIn = async (data) => {
     try{
       const response = await authClient.post('/prelogin', data)
-      console.log('response prelogin...', response)
       const { email, otpEnabled, userId} = response.data
       setUserId(userId)
       if(!otpEnabled){
@@ -179,9 +171,7 @@ const AuthProvider = ({ children }) => {
     try{
       console.log('triying add wallet', data)
       const response = await ResourceClient.post('/wallet', data)
-      console.log('response: ', response)
       const {walletNumber, network} = response.data
-      console.log('response2')
       setWallet(walletNumber)
       setNetwork(network)
     }catch(e){
@@ -234,10 +224,6 @@ const AuthProvider = ({ children }) => {
       setRequestLoading(false);
 
       if (response.status === 200) {
-        console.log({
-          base32: response.data.result.base32,
-          otpauthUrl: response.data.result.otpAuthUrl
-        });
         setSecret({
           otpauthUrl: response.data.result.otpAuthUrl,
           base32: response.data.result.base32,
@@ -255,7 +241,6 @@ const AuthProvider = ({ children }) => {
     try {
       setRequestLoading(true);
       const response = await ResourceClient.get('/otp/disable')
-      console.log('start disable otp..', response)
       setRequestLoading(false);
       if(response.data.isDisabled){
         setIs2FAEnabled(false)
