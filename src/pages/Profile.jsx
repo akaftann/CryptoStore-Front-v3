@@ -38,10 +38,10 @@ const navigate = useNavigate();
 
   return (
     <>
-      <section className="bg-ct-blue-600  min-h-screen pt-10">
+      <section className="bg-ct-blue-600  w-full min-h-screen pt-10">
         <div className="max-w-4xl p-12 mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex gap-20 justify-center items-start">
             {wallet && network ?
-                (<div className="flex-grow-2 w-1/2">
+                (<div className="flex-grow-2">  {/*when there is 2fa block set  w-1/2 */}
                     <h1 className="text-2xl font-semibold">Wallet info</h1>
                     <div className="mt-8">
                     <p className="mb-2">Wallet Number: {wallet}</p>
@@ -54,7 +54,7 @@ const navigate = useNavigate();
                 </div>)
                 :
                 (
-                    <div className="flex-grow-2 w-1/2">
+                    <div className="flex-grow-2 "> {/*when there is 2fa block set  w-1/2 */}
                     <h1 className="text-2xl font-semibold">Wallet info</h1>
                         <div className="mt-8">
                         <p className="mb-2">You don't have any wallet yet</p>
@@ -66,7 +66,7 @@ const navigate = useNavigate();
                 </div>
                 )
             }
-          <div>
+          {/* <div>
             <h3 className="text-2xl font-semibold">
               Mobile App Authentication (2FA)
             </h3>
@@ -92,7 +92,7 @@ const navigate = useNavigate();
                 Setup 2FA
               </button>
             )}
-          </div>
+          </div> */}
         </div>
       </section>
       {openModal && (

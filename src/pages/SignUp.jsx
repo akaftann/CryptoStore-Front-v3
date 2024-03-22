@@ -1,13 +1,11 @@
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import style from "./style.module.scss";
 import { AuthContext } from "../context/AuthContext";
-import { useContext, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "./validtionSchemas";
 import Field from "../components/Field/Field";
 import Button from "../components/Button/Button";
-
-
 
 const defaultValues = {
   email: "",
@@ -18,7 +16,7 @@ const defaultValues = {
 const rolesList = [
   {
     id: 1,
-    title: "Администратор",
+    title: "Адміністратор",
   },
   {
     id: 2,
@@ -26,61 +24,78 @@ const rolesList = [
   },
   {
     id: 3,
-    title: "Пользователь",
+    title: "Користувач",
   },
 ];
 
 export default function SignUp() {
-  const { handleSignUp, } = useContext(AuthContext);
-  const [visible, setVisible] = useState(false);
-  const visibleHandler = () => {
-    setVisible(!visible)
-  }
+  const { handleSignUp } = useContext(AuthContext);
+  const [isChecked, setIsChecked] = useState(false);
 
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues,
     resolver: yupResolver(signUpSchema),
   });
 
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked);
+  };
+
+  const handleTermsLinkClick = () => {
+    window.open("https://app.websitepolicies.com/policies/view/tw3pc0ql", "_blank");
+  };
+
+  const onSubmit = (data) => {
+    if (isChecked) {
+      handleSignUp(data);
+    } else {
+      alert("Please accept the terms and conditions.");
+    }
+  };
+
   return (
     <>
-    <form className={style.wrapper} onSubmit={handleSubmit(handleSignUp)}>
-      <h2>Create account</h2>
-      <Field
-        name="email"
-        register={register}
-        autoComplete="off"
-        placeholder="User's email"
-        error={Boolean(errors.email)}
-        helperText={errors.email?.message}
-      />
-      <Field
-        type={visible? "text" : "password"}
-        name="pass"
-        register={register}
-        autoComplete="off"
-        placeholder="Password"
-        error={Boolean(errors.pass)}
-        helperText={errors.pass?.message}
-        visible={visible}
-        visibleHandler={visibleHandler}
-      />
-      {/* <Controller
-        control={control}
-        name="role"
-        render={({ field: { onChange, value } }) => (
-          <Select onChange={onChange} value={value} options={rolesList} />
-        )}
-      /> */}
-      <Button disabled={isSubmitting} type="submit">
-        Sign Up
-      </Button>
-    </form>
+      <form className={style.wrapper} onSubmit={handleSubmit(onSubmit)}>
+        <h2>Create account</h2>
+        <Field
+          name="email"
+          register={register}
+          autoComplete="off"
+          placeholder="User's email"
+          error={Boolean(errors.email)}
+          helperText={errors.email?.message}
+        />
+        <Field
+          type="password"
+          name="pass"
+          register={register}
+          autoComplete="off"
+          placeholder="Password"
+          error={Boolean(errors.pass)}
+          helperText={errors.pass?.message}
+        />
+        <div className={style.checkboxWrapper}>
+          <input
+            type="checkbox"
+            id="termsCheckbox"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+          />
+          <label htmlFor="termsCheckbox">
+          &nbsp; I accept the{" "}
+            <span className="cursor-pointer underline italic" onClick={handleTermsLinkClick}>
+              terms and conditions
+            </span>
+          </label>
+        </div>
+        <Button disabled={isSubmitting || !isChecked} type="submit">
+          Sign Up
+        </Button>
+      </form>
     </>
   );
 }
