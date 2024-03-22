@@ -7,13 +7,9 @@ const InvoicePage = () => {
                 <h2 className='flex-1 font-poppins font-semibold ss:text-[25px] text-[25px] ss:leading-[100.8px] leading-[75px]'>Additional info</h2>
                 <h2>SEPA</h2>
                 <p className='font-poppins font-normal text-[15px] leading-[30.8px]'>1-2 banking days
-                In order to complete your purchase, you must make a transfer through your bank.
-                After making the transfer, it will take around 1 banking day to reach our account.
-                Immediately after we receive your transfer, we will initiate the transfer of your USDT.
-                A market order is an instruction to buy or sell at the best price. These orders are usually executed
-                immediately. While your money is being transferred to In the day, the price of the crypto may fluctuate
-                until In the day completes the order.
-                Your transaction will be processed as soon as the payment is done, and your USDT is available in your wallet.</p>
+                1-2 banking days In order to complete your purchase, you must make a transfer through your bank. After making the transfer, it will take around 1 banking day to reach our account. Immediately after we receive your transfer, we will initiate the transfer of your USDT. 
+                A market order is an instruction to buy or sell at the best price. These orders are usually executed immediately. While your money is being transferred to In the day, the price of the crypto may fluctuate until In the day completes the order. Your transaction will be processed as soon as the payment is done, and your USDT is available in your wallet.
+                Your bank account name must match the name registered to your In the day account. Please note that you must include the reference code exactly when making a bank transfer. If the deposited amount exceeds your daily limit, we will divide the total payment based on your maximum daily limit.</p>
                 <p className='font-poppins font-normal text-[15px] leading-[30.8px]'>Your bank account name must match the name registered to your Binance account.Please note that you must include the reference code exactly when making a bank transfer. If the deposited amount exceeds your daily limit, we will divide the total payment based on your maximum daily limit.
                 Please note that we do not accept Swift transfers, Please do not use the Swift transfer to make deposit.</p>
             </div>
