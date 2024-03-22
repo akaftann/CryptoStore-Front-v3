@@ -155,13 +155,15 @@ const AuthProvider = ({ children }) => {
   const completeSignIn = async (data) => {
     try{
       const response = await authClient.post('/login', data)
-      const { accessToken, isActivated, email, isVerified, otpEnabled} = response.data
+      const { accessToken, isActivated, email, isVerified, otpEnabled, firstOtpPassed} = response.data
+      console.log('complete signin:',firstOtpPassed )
       inMemoryJWT.setToken(accessToken)
       setIsUserLogged(true)
       setIsUserActivate(isActivated)
       setMaskEmail(email)
       setIsUserVerified(isVerified)
       setIs2FAEnabled(otpEnabled)
+      setisFirst2FApassed(firstOtpPassed)
     }catch(e){
       showErrorMessage(e)
     }

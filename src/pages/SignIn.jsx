@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import style from "./style.module.scss";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signInSchema } from "./validtionSchemas";
@@ -8,6 +8,7 @@ import Field from "../components/Field/Field";
 import Button from "../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import Validate2FAComponent from '../components/TwoFactorAuth/Validate2FAComponent'
+import { EyeInvisibleOutlined, EyeOutlined} from '@ant-design/icons'
 
 const defaultValues = {
   email: "",
@@ -15,6 +16,7 @@ const defaultValues = {
 };
 
 export default function SignIn() {
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate()
   const { handleSignIn , setOpenModalValidate, openModalValidate} = useContext(AuthContext);
   const {
@@ -25,6 +27,9 @@ export default function SignIn() {
     defaultValues,
     resolver: yupResolver(signInSchema),
   });
+  const visibleHandler = () => {
+    setVisible(!visible)
+  }
 
   return (
     <>
@@ -40,13 +45,15 @@ export default function SignIn() {
         helperText={errors.email?.message}
       />
       <Field
-        type="password"
+        type={visible? "text" : "password"}
         name="pass"
         register={register}
         autoComplete="off"
         placeholder="Password"
         error={Boolean(errors.pass)}
         helperText={errors.pass?.message}
+        visible={visible}
+        visibleHandler={visibleHandler}
       />
       <Button disabled={isSubmitting} type="submit">
         Log In
