@@ -7,6 +7,8 @@ import { signUpSchema } from "./validtionSchemas";
 import Field from "../components/Field/Field";
 import Button from "../components/Button/Button";
 
+
+
 const defaultValues = {
   email: "",
   pass: "",
@@ -29,7 +31,7 @@ const rolesList = [
 ];
 
 export default function SignUp() {
-  const { handleSignUp, activationLink } = useContext(AuthContext);
+  const { handleSignUp, } = useContext(AuthContext);
 
   const {
     register,
@@ -42,6 +44,7 @@ export default function SignUp() {
   });
 
   return (
+    <>
     <form className={style.wrapper} onSubmit={handleSubmit(handleSignUp)}>
       <h2>Create account</h2>
       <Field
@@ -71,5 +74,6 @@ export default function SignUp() {
         Sign Up
       </Button>
     </form>
+    </>
   );
 }

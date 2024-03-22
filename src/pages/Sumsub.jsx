@@ -10,7 +10,6 @@ const SumsubIntegration = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('start sumsub component', externalId)
       await getSumsubToken(externalId);
     };
     if(externalId!==''){
@@ -19,7 +18,6 @@ const SumsubIntegration = () => {
   }, []);
 
   function launchWebSdk(token) {
-    console.log("launch token: ", token)
     return (
 
       <SumsubWebSdk
@@ -56,11 +54,10 @@ const SumsubIntegration = () => {
 
   function messageHandler(type, payload) {
     // Логіка обробки повідомлень
-    console.log('onMessage', type, payload);
-    console.log("type: ", type, "equal?:", type==="idCheck.onApplicantStatusChanged")
+    /* console.log('onMessage', type, payload);
+    console.log("type: ", type, "equal?:", type==="idCheck.onApplicantStatusChanged") */
     if(type==="idCheck.onApplicantStatusChanged"){
       if(payload.reviewStatus==="completed" && payload.reviewResult.reviewAnswer==="GREEN"){
-        console.log("user verified")
         setTimeout(() => {
           window.location.reload();
         }, 2000);
