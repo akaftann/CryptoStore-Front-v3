@@ -65,6 +65,7 @@ const AuthProvider = ({ children }) => {
   const [userId, setUserId] = useState('');
   const [tempData, setTempData] = useState({});
   const [openModalValidate, setOpenModalValidate] = useState(false);
+  const [isFirst2FApassed, setisFirst2FApassed] = useState(false);
   
 
   const handleFetchProtected = async() => {
@@ -128,6 +129,22 @@ const AuthProvider = ({ children }) => {
       toast.success("Two-Factor Auth Enabled Successfully", {
         position: "top-right",
       });
+      return 
+    } catch (e) {
+      setRequestLoading(false);
+      showErrorMessage(e)
+    }
+  };
+
+  const verifyOtpRegister = async (token) => {
+    try {
+      setRequestLoading(true);
+      const response = await ResourceClient.post('/otp/verify', {token, firstOtpPassed: true})
+      if(response.data.otpEnabled){
+        setIs2FAEnabled(response.data.otpEnabled)
+        setisFirst2FApassed(true)
+      }
+      setRequestLoading(false);
       return 
     } catch (e) {
       setRequestLoading(false);
@@ -221,6 +238,7 @@ const AuthProvider = ({ children }) => {
     try {
       setRequestLoading(true);
       const response = await ResourceClient.get('/otp/generate')
+      console.log("generating qr:", response)
       setRequestLoading(false);
 
       if (response.status === 200) {
@@ -228,8 +246,11 @@ const AuthProvider = ({ children }) => {
           otpauthUrl: response.data.result.otpAuthUrl,
           base32: response.data.result.base32,
         });
-        setOpenModal(true);
+        if(isFirst2FApassed){
+          setOpenModal(true);
+        }
       }
+      return response.data.result
     } catch (e) {
       setRequestLoading(false);
       showErrorMessage(e)
@@ -277,6 +298,7 @@ const AuthProvider = ({ children }) => {
     setNetwork(res.data.network)
     setIs2FAEnabled(res.data.otpEnabled)
     setUserId(res.data.userId)
+    setisFirst2FApassed(res.data.firstOtpPassed)
    })
     .catch((e)=>{
       setIsUserLogged(false)
@@ -305,6 +327,7 @@ const AuthProvider = ({ children }) => {
         setOpenModalValidate,
         completeSignIn,
         setTempData,
+        verifyOtpRegister,
         sumSubToken,
         isUserVerified,
         isAppReady,
@@ -322,6 +345,7 @@ const AuthProvider = ({ children }) => {
         tempData,
         userId,
         actions,
+        isFirst2FApassed,
       }}
     >
       {isAppReady ? (

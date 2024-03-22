@@ -12,9 +12,11 @@ import AddWallet from './pages/AddWallet'
 import Validate2faPage from './pages/Validate2FA'
 import ProfilePage from './pages/Profile'
 import SumsubIntegration from './pages/Sumsub'
+import TwoFactorAuthRegister from './pages/TwoFactorRegister'
 
 const App = () => {
-  const {isUserLogged, isUserActivate, isUserVerified, handleLogOut} = useContext(AuthContext)
+  const {isUserLogged, isUserActivate, isUserVerified, isFirst2FApassed, handleLogOut} = useContext(AuthContext)
+  console.log("isFirst2FApassed: ", isFirst2FApassed)
   return (
     <div className='wrapper'>
       <SnackbarProvider />
@@ -46,6 +48,10 @@ const App = () => {
           (
             <Route path="confirm-email" element={<ConfirmEmail />} />
           )
+            : !isFirst2FApassed ?
+          (
+            <Route path="verify2fa" element={<TwoFactorAuthRegister />} />
+          )   
             : !isUserVerified ? 
           (
             <Route path="verify" element={<SumsubIntegration />} />
@@ -63,7 +69,7 @@ const App = () => {
           ) 
           }
 
-          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : !isUserActivate ? "confirm-email" : isUserVerified ? "demo" : "verify"} />} />
+          <Route path="*" element={<Navigate to={!isUserLogged ? "sign-in" : !isUserActivate ? "confirm-email" : !isFirst2FApassed? "verify2fa" : isUserVerified ? "demo" : "verify"} />} />
           
         </Routes>
       </BrowserRouter>
