@@ -9,6 +9,7 @@ import Button from "../components/Button/Button";
 import { useNavigate } from "react-router-dom";
 import Validate2FAComponent from '../components/TwoFactorAuth/Validate2FAComponent'
 import { EyeInvisibleOutlined, EyeOutlined} from '@ant-design/icons'
+import styles from '../style';
 
 const defaultValues = {
   email: "",
@@ -32,9 +33,10 @@ export default function SignIn() {
   }
 
   return (
-    <>
+    
+    <section id="home" className={`md:flex-row flex-col ${styles.paddingY}`}>
     <form onSubmit={handleSubmit(handleSignIn)} className={style.wrapper}>
-      <h2>Log in</h2>
+      <h1 className="text-white text-center">Log in</h1>
       <Field
         type="text"
         name="email"
@@ -65,6 +67,7 @@ export default function SignIn() {
           action={1}
         />
       )}
-    </>
+      </section>
+    
   );
 }

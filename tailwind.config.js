@@ -5,6 +5,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        primary: "#00040f",
+        secondary: "#00f6ff",
+        dimWhite: "rgba(255, 255, 255, 0.7)",
+        dimBlue: "rgba(9, 151, 124, 0.1)",
         'ct-dark-600': '#222',
         'ct-dark-200': '#e5e7eb',
         'ct-dark-100': '#f5f6f7',
@@ -26,11 +30,7 @@ module.exports = {
     container: {
       center: true,
       padding: '1rem',
-      screens: {
-        lg: '1125px',
-        xl: '1125px',
-        '2xl': '1125px',
-      },
+      
     },
   },
   plugins: [],

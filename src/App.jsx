@@ -13,15 +13,16 @@ import Validate2faPage from './pages/Validate2FA'
 import ProfilePage from './pages/Profile'
 import SumsubIntegration from './pages/Sumsub'
 import TwoFactorAuthRegister from './pages/TwoFactorRegister'
+import Test from './pages/ComponentPages/Test'
 
 const App = () => {
   const {isUserLogged, isUserActivate, isUserVerified, isFirst2FApassed, handleLogOut} = useContext(AuthContext)
   console.log("isFirst2FApassed: ", isFirst2FApassed)
   return (
-    <div className='wrapper'>
+    <div>
       <SnackbarProvider />
       <BrowserRouter>
-        {!isUserLogged ? (
+       {/*  {!isUserLogged ? (
           <nav className='nav'>
             <Link to="sign-in">Sign-in</Link>
             <Link to="sign-up">Sign-up</Link>
@@ -35,13 +36,14 @@ const App = () => {
           </nav>
         )
 
-        }
+        } */}
         <Routes>
           {!isUserLogged ? (
             <>
               <Route path="sign-in" element={<SignIn />} />
               <Route path="sign-up" element={<SignUp />} />
               <Route path="validate2fa" element={<Validate2faPage />} />
+              <Route path="test" element={<Test />} />
               
             </>
           ) : !isUserActivate ? 
