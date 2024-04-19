@@ -1,10 +1,10 @@
 import Layout from '../../components/Layout/Layout'
-import SignIn from '../SignIn'
+import AddWallet from '../AddWallet'
 
-export default function SignInComponent(){
+export default function AddWalletComponent(){
     return ( 
         <Layout>
-            <SignIn />
+            <AddWallet />
         </Layout>
     )
 }

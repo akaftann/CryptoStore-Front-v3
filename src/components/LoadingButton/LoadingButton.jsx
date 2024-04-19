@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 
 const LoadingButton = ({
   textColor = "text-white",
-  btnColor = "bg-ct-yellow-600",
+  btnColor = "bg-[#5CE1E6]",
   children,
   loading = false,
 }) => {

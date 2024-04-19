@@ -1,10 +1,10 @@
 import Layout from '../../components/Layout/Layout'
-import SignIn from '../SignIn'
+import ProfilePage from '../Profile'
 
-export default function SignInComponent(){
+export default function ProfileComponent(){
     return ( 
         <Layout>
-            <SignIn />
+            <ProfilePage />
         </Layout>
     )
 }

@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { close, logo, menu } from "../../assets";
+import { close, logo, menu, logo_new, logo_edited } from "../../assets";
 import { AuthContext } from "../../context/AuthContext";
 
 
@@ -22,7 +22,7 @@ const Navbar = () => {
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
-      <img src={logo} alt="hoobank" className="w-[124px] h-[32px]" />
+      <img src={logo_edited} alt="hoobank" className="w-[115px] h-[75px]" />
 
       <ul className="list-none sm:flex hidden justify-end items-center flex-1">
         {updatedNavLinks.map((nav, index) => (

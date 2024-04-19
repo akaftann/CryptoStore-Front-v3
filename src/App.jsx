@@ -17,6 +17,10 @@ import SignUpComponent from './pages/ComponentPages/SignUpComponent'
 import ConfirmEmailComponent from './pages/ComponentPages/ConfirmEmailComponent'
 import TwoFactorRegisterComponent from './pages/ComponentPages/TwoFactorRegisterComponent'
 import DemoComponent from './pages/ComponentPages/DemoComponent'
+import ProfileComponent from './pages/ComponentPages/ProfileComponent'
+import AddWalletComponent from './pages/ComponentPages/AddWalletComponent'
+
+
 
 
 
@@ -68,9 +72,9 @@ const App = () => {
             <Route path="demo" element={<DemoComponent />} />
             <Route path="req" element={<InvoicePage />} />
             <Route path="wallet-info" element={<WalletInfo />} />
-            <Route path="wallet" element={<AddWallet />} />
+            <Route path="wallet" element={<AddWalletComponent />} />
             <Route path="validate2fa" element={<Validate2faPage />} />
-            <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile" element={<ProfileComponent />} />
             </>
           ) 
           }

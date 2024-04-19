@@ -21,7 +21,7 @@ export default function Demo() {
       };
 
       showErrorMessage(error)
-      return navigate('/wallet-info')
+      return navigate('/profile')
     }
     navigate('/req')
   };

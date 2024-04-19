@@ -46,9 +46,9 @@ export default function AddWallet() {
   });
 
   return (
-    <>
+    <section id="home" className={`md:flex-row flex-col sm:py-30 py-20`}>
     <form onSubmit={handleSubmit(addWallet)} className={style.wrapper}>
-      <h2>Add wallet</h2>
+      <h1 className="text-white text-center">Add wallet</h1>
       <Field
         name="walletNumber"
         register={register}
@@ -89,6 +89,6 @@ export default function AddWallet() {
         action={3}
       />
     )}
-    </>
+    </section>
   );
 }
