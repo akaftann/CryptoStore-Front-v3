@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { object, string } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AuthContext } from "../context/AuthContext";
+import styles from '../style';
 
-const styles = {
+const style = {
   heading3: `text-xl font-semibold text-gray-900 p-4 border-b`,
   heading4: `text-base text-ct-blue-600 font-medium border-b mb-2`,
   modalOverlay: `overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full`,
@@ -49,16 +50,17 @@ const TwoFactorAuthRegister = () => {
   
 
   return (
-    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-screen flex gap-20 justify-center items-start mt-20">
+    
+    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md flex gap-20 justify-center items-start mt-5 mb-10">
       <div className="relative p-4 w-full  ">
         <div className="relative bg-white rounded-lg shadow text-center">
-          <h3 className={styles.heading3}>Two-Factor Authentication (2FA)</h3>
+          <h3 className={style.heading3}>Two-Factor Authentication (2FA)</h3>
           {/* Modal body */}
           <div className="p-6 space-y-4">
-            <h4 className={styles.heading4}>
+            <h4 className={style.heading4}>
               Configuring Google Authenticator or Authy
             </h4>
-            <div className={styles.orderedList}>
+            <div className={style.orderedList}>
               <li>
                 Install Google Authenticator (IOS - Android) or Authy (IOS -
                 Android).
@@ -70,7 +72,7 @@ const TwoFactorAuthRegister = () => {
               </li>
             </div>
             <div>
-              <h4 className={styles.heading4}>Scan QR Code</h4>
+              <h4 className={style.heading4}>Scan QR Code</h4>
               <div className="flex justify-center">
                 <img
                   className="block w-64 h-64 object-contain"
@@ -80,11 +82,11 @@ const TwoFactorAuthRegister = () => {
               </div>
             </div>
             <div>
-              <h4 className={styles.heading4}>Or Enter Code Into Your App</h4>
+              <h4 className={style.heading4}>Or Enter Code Into Your App</h4>
               <p className="text-sm">SecretKey: {secret.base32} (Base32 encoded)</p>
             </div>
             <div>
-              <h4 className={styles.heading4}>Verify Code</h4>
+              <h4 className={style.heading4}>Verify Code</h4>
               <p className="text-sm">
                 For changing the setting, please verify the authentication code:
               </p>
@@ -99,8 +101,8 @@ const TwoFactorAuthRegister = () => {
                 {errors.token ? errors.token.message : null}
               </p>
 
-              <div className={styles.buttonGroup}>
-                <button type="submit" className={styles.buttonBlue}>
+              <div className={style.buttonGroup}>
+                <button type="submit" className={style.buttonBlue}>
                   Verify & Activate
                 </button>
               </div>
@@ -109,7 +111,7 @@ const TwoFactorAuthRegister = () => {
         </div>
       </div>
     </div>
-
+    
   );
 };
 

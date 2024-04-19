@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSchema } from "./validtionSchemas";
 import Field from "../components/Field/Field";
 import Button from "../components/Button/Button";
+import styles from '../style';
 
 const defaultValues = {
   email: "",
@@ -13,20 +14,6 @@ const defaultValues = {
   role: 1,
 };
 
-const rolesList = [
-  {
-    id: 1,
-    title: "Адміністратор",
-  },
-  {
-    id: 2,
-    title: "Модератор",
-  },
-  {
-    id: 3,
-    title: "Користувач",
-  },
-];
 
 export default function SignUp() {
   const { handleSignUp } = useContext(AuthContext);
@@ -58,9 +45,9 @@ export default function SignUp() {
   };
 
   return (
-    <>
+    <section id="home" className={`md:flex-row flex-col ${styles.paddingY}`}>
       <form className={style.wrapper} onSubmit={handleSubmit(onSubmit)}>
-        <h2>Create account</h2>
+      <h1 className="text-white text-center">Create account</h1>
         <Field
           name="email"
           register={register}
@@ -85,7 +72,7 @@ export default function SignUp() {
             checked={isChecked}
             onChange={handleCheckboxChange}
           />
-          <label htmlFor="termsCheckbox">
+          <label htmlFor="termsCheckbox" className="text-white">
           &nbsp; I accept the{" "}
             <span className="cursor-pointer underline italic" onClick={handleTermsLinkClick}>
               terms and conditions
@@ -96,6 +83,6 @@ export default function SignUp() {
           Sign Up
         </Button>
       </form>
-    </>
+    </section>
   );
 }

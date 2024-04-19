@@ -60,7 +60,7 @@ const Navbar = () => {
                 } ${index === updatedNavLinks.length - 1 ? "mb-0" : "mb-4"}`}
                 onClick={() => handleNavItemClick(nav)}
               >
-                <a href={`#${nav.id}`}>{nav.title}</a>
+                 <Link to={`/${nav.id}`}>{nav.title}</Link>
               </li>
             ))}
           </ul>

@@ -12,7 +12,7 @@ const Layout = ({ children }) => (
       </div>
     </div>
 
-    <div className={`bg-primary h-screen ${styles.flexStart}`}>
+    <div className={`bg-primary h-screen overflow-auto ${styles.flexStart}`}>
       <div className={`${styles.boxWidth} ${styles.paddingY}`}>
         {children}
       </div>

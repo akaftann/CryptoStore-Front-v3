@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import style from "./style.module.scss";
 import { AuthContext } from "../context/AuthContext";
 import Button from "../components/Button/Button";
+import styles from '../style';
 
 export default function ConfirmEmail() {
   const { handleLogOut, maskEmail, handleActivate } = useContext(AuthContext);
@@ -13,14 +14,16 @@ export default function ConfirmEmail() {
   };
 
   return (
+    <section id="home" className={`md:flex-row flex-col ${styles.paddingY}`}>
     <div className={style.wrapper2}>
-      <h1>Verify your email</h1>
-      <h2>Email with activation code we sent to {`${maskEmail}`}</h2>
+      <h1 className="text-white text-center">Verify your email</h1>
+      <h1 className="text-white text-center">Email with activation code we sent to {`${maskEmail}`}</h1>
 
-      <label>
+      <label className="text-white text-center">
         Activation Code:
         <input
           type="text"
+          className="text-black"
           value={activationCode}
           onChange={handleChange}
           pattern="\d*"
@@ -37,5 +40,6 @@ export default function ConfirmEmail() {
         Log out
       </Button>
     </div>
+    </section>
   );
 }
