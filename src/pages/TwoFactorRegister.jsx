@@ -51,7 +51,7 @@ const TwoFactorAuthRegister = () => {
 
   return (
     
-    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md flex gap-20 justify-center items-start mt-5 mb-10">
+    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md flex gap-20 justify-center items-start my-auto">
       <div className="relative p-4 w-full  ">
         <div className="relative bg-white rounded-lg shadow text-center">
           <h3 className={style.heading3}>Two-Factor Authentication (2FA)</h3>
@@ -74,11 +74,13 @@ const TwoFactorAuthRegister = () => {
             <div>
               <h4 className={style.heading4}>Scan QR Code</h4>
               <div className="flex justify-center">
-                <img
-                  className="block w-64 h-64 object-contain"
-                  src={qrcodeUrl}
-                  alt="qrcode url"
-                />
+                <a href={qrcodeUrl} target="_blank" rel="noopener noreferrer">
+                  <img
+                    className="block w-64 h-64 object-contain"
+                    src={qrcodeUrl}
+                    alt="qrcode url"
+                  />
+                </a>
               </div>
             </div>
             <div>
