@@ -24,6 +24,7 @@ const twoFactorAuthSchema = object({
 const TwoFactorAuthRegister = () => {
   const {verifyOtpRegister, secret, generateQrCode} = useContext(AuthContext);
   const [qrcodeUrl, setqrCodeUrl] = useState("");
+  const [otpAuthUrls, setOtpAuthUrls] = useState("");
   const {
     handleSubmit,
     register,
@@ -42,6 +43,7 @@ const TwoFactorAuthRegister = () => {
   useEffect(() => {
     const loadQr = async()=>{
       const {base32, otpAuthUrl} = await generateQrCode()
+      setOtpAuthUrls(otpAuthUrl)
       QRCode.toDataURL(otpAuthUrl).then(setqrCodeUrl);
     }
     loadQr()
@@ -74,7 +76,7 @@ const TwoFactorAuthRegister = () => {
             <div>
               <h4 className={style.heading4}>Scan QR Code</h4>
               <div className="flex justify-center">
-                <a href={qrcodeUrl} target="_blank" rel="noopener noreferrer">
+                <a href={otpAuthUrls} target="_blank" rel="noopener noreferrer">
                   <img
                     className="block w-64 h-64 object-contain"
                     src={qrcodeUrl}
